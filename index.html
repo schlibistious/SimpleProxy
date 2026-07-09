@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrashyPooPoo</title>
+    <style>
+        body {
+            background-color: rgb(6, 39, 70);
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+        #webBar {
+            background-color: rgb(10, 68, 122);
+            width: 60%;
+            -webkit-text-fill-color: aliceblue;
+            padding-top: 0.5%;
+            padding-bottom: 0.5%;
+        }
+        #display {
+            width: 100%;
+            height: 80vh;
+            border: 10px solid #109cd3;
+            border-radius: 10px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="-webkit-text-fill-color: aliceblue;">FunkyBrowser</h1>
+    <input type="text" id="webBar" style="-webkit-text-fill-color: aliceblue;"> <p>please note that there are many websites that are too complicated and do not work!</p>
+    <iframe id="display" sandbox="allow-scripts allow-forms allow-popups allow-same-origin"></iframe>
+    <script>
+        const webBar = document.getElementById("webBar")
+        const display = document.getElementById("display")
+        webBar.addEventListener("blur", async () => {
+            try {
+                let url = webBar.value.trim()
+                if (!/^https?:\/\//i.test(url)) url = "https://" + url
+                const getResult = await fetch("https://fulgid-maisie-semicircularly.ngrok-free.dev/proxy", {
+                    method: "POST",
+                    body: JSON.stringify({content: url}),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                let html = await getResult.text()
+                display.srcdoc = html
+                } catch (err) {
+                    display.srcdoc = "Error: " + err.message
+                }
+        })
+    </script>
+</body>
+</html>
