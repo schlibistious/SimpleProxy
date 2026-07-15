@@ -40,10 +40,11 @@
                 if (!/^https?:\/\//i.test(url)) url = "https://" + url
                 const getResult = await fetch("https://fulgid-maisie-semicircularly.ngrok-free.dev/proxy", {
                     method: "POST",
-                    body: JSON.stringify({content: url}),
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning": "true"
+                    },
+                    body: JSON.stringify({content: url})
                 })
                 let html = await getResult.text()
                 display.srcdoc = html
